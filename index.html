@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growvia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="Growvia.png" type="image/x-icon">
+    <style>
+        :root {
+            --primary-dark: #16213E;
+            --secondary-dark: #1A1A2E;
+            --accent-blue: #3498DB;
+            --text-light: #ECF0F1;
+            --success-green: #2ECC71;
+            --error-red: #E74C3C;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(52, 152, 219, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(46, 204, 113, 0.1) 0%, transparent 50%);
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--primary-dark);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 45%,
+                rgba(52, 152, 219, 0.1) 50%,
+                transparent 55%
+            );
+            transform: rotate(30deg);
+            z-index: 0;
+            animation: shine 6s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(30deg) translateX(-20%) translateY(-20%); }
+            100% { transform: rotate(30deg) translateX(20%) translateY(20%); }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--accent-blue), #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(236, 240, 241, 0.9);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: rgba(236, 240, 241, 0.5);
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .toggle-password:hover {
+            color: var(--accent-blue);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), #2980B9);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: rgba(236, 240, 241, 0.6);
+            position: relative;
+            z-index: 1;
+        }
+
+        .toggle-link a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-link a:hover {
+            color: #4ECDC4;
+            text-decoration: underline;
+        }
+
+        .message {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .message.success {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success-green);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .message.error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--error-red);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        /* Web3 inspired decorations */
+        .decorative-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .circle-1 {
+            width: 100px;
+            height: 100px;
+            background: var(--accent-blue);
+            top: -30px;
+            left: -30px;
+        }
+
+        .circle-2 {
+            width: 60px;
+            height: 60px;
+            background: var(--success-green);
+            bottom: -20px;
+            right: -20px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="decorative-circle circle-1"></div>
+        <div class="decorative-circle circle-2"></div>
+
+        <!-- Sign-In Form -->
+        <form id="signIn">
+            <div class="auth-header">
+                <h2 id="formTitle">Sign In</h2>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="input-field" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" class="input-field" required />
+                    <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" id="submitSignIn" class="btn">Sign In</button>
+            <div id="signInMessage" class="message"></div>
+            <div class="toggle-link">
+                <a href="#" id="signUpButton">Don't have an account? Sign Up</a>
+            </div>
+        </form>
+
+        <!-- Sign-Up Form -->
+        <form id="signUp" style="display: none;">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+            </div>
+            
+            <div class="form-group">
+                <label for="fName">First Name</label>
+                <input type="text" id="fName" class="input-field" required />
+            </div>
+            <div class="form-group">
+                <label for="lName">Last Name</label>
+                <input type="text" id="lName" class="input-field" required />
+            </div>
+            <div class="form-group">
+                <label for="rEmail">Email</label>
+                <input type="email" id="rEmail" class="input-field" required />
+            </div>
+            <div class="form-group">
+                <label for="rPassword">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="rPassword" class="input-field" required />
+                    <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" id="submitSignUp" class="btn">Sign Up</button>
+            <div id="signUpMessage" class="message"></div>
+            <div class="toggle-link">
+                <a href="#" id="signInButton">Already have an account? Sign In</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                const input = e.target.closest('button').previousElementSibling;
+                const icon = e.target.closest('button').querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+
+        // Form switching
+        document.getElementById("signUpButton").addEventListener("click", (e) => {
+            e.preventDefault();
+            document.getElementById("signUp").style.display = "block";
+            document.getElementById("signIn").style.display = "none";
+        });
+        
+        document.getElementById("signInButton").addEventListener("click", (e) => {
+            e.preventDefault();
+            document.getElementById("signUp").style.display = "none";
+            document.getElementById("signIn").style.display = "block";
+        });
+
+        // Form submission handlers
+        document.getElementById("signIn").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const submitButton = document.getElementById("submitSignIn");
+            submitButton.disabled = true;
+            
+            // Simulate form submission (replace with actual Firebase auth)
+            setTimeout(() => {
+                console.log("Sign In form submitted");
+                document.getElementById("signInMessage").textContent = "Sign in successful!";
+                document.getElementById("signInMessage").classList.add("success");
+                document.getElementById("signInMessage").style.display = "block";
+                submitButton.disabled = false;
+            }, 1000);
+        });
+
+        document.getElementById("signUp").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const submitButton = document.getElementById("submitSignUp");
+            submitButton.disabled = true;
+            
+            // Simulate form submission (replace with actual Firebase auth)
+            setTimeout(() => {
+                console.log("Sign Up form submitted");
+                document.getElementById("signUpMessage").textContent = "Account created successfully!";
+                document.getElementById("signUpMessage").classList.add("success");
+                document.getElementById("signUpMessage").style.display = "block";
+                submitButton.disabled = false;
+            }, 1000);
+        });
+    </script>
+
+    <!-- Firebase SDK Scripts -->
+    <script type="module" src="firebaseauth.js"></script>
+</body>
+</html>

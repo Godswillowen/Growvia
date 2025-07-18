@@ -1,2 +1,1 @@
-# Growvia
-Simple investment platform
+# fintech

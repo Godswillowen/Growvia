@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="Growvia.png" type="image/x-icon">
+    <title>About Growvia - Transparent, Flexible, Rewarding Investments</title>
+    <style>
+        :root {
+            --primary: #0056b3;
+            --primary-light: #3a7fc5;
+            --secondary: #00a651;
+            --secondary-light: #33b674;
+            --accent: #ffc107;
+            --accent-light: #ffd54f;
+            --dark: #121a26;
+            --dark-light: #1e2a3a;
+            --light: #ffffff;
+            --light-dark: #f5f7fa;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --notification-badge: #e74c3c;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        .dark-mode {
+            --primary: #3da5ff;
+            --primary-light: #5fb4ff;
+            --secondary: #4caf50;
+            --secondary-light: #6dbf70;
+            --accent: #ffc107;
+            --accent-light: #ffd54f;
+            --dark: #121a26;
+            --dark-light: #1e2a3a;
+            --light: #1e2a3a;
+            --light-dark: #121a26;
+            --text: #e2e8f0;
+            --text-light: #a0aec0;
+            --bg: #121a26;
+            --card-bg: #1e2a3a;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --notification-badge: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: var(--transition);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            outline: none;
+            color: var(--text);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-icon {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            color: var(--text);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--notification-badge);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .notification-modal {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            width: 350px;
+            max-width: 90%;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 15px;
+            z-index: 101;
+            display: none;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .clear-notifications {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .notification-item {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .notification-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-item-text {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+
+        .notification-item-time {
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        .notification-icon-type {
+            font-size: 0.9rem;
+        }
+
+        .notification-icon-type.info {
+            color: var(--primary);
+        }
+
+        .notification-icon-type.success {
+            color: var(--success);
+        }
+
+        .notification-icon-type.warning {
+            color: var(--warning);
+        }
+
+        .notification-icon-type.danger {
+            color: var(--danger);
+        }
+
+        .no-notifications {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-light);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            margin-top: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.1) 0%, transparent 30%);
+            z-index: 0;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        /* Content Sections */
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        h2::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        h3 {
+            color: var(--primary);
+            margin: 25px 0 15px;
+            font-size: 1.5rem;
+        }
+
+        .highlight {
+            background-color: rgba(0, 86, 179, 0.1);
+            padding: 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border-left: 4px solid var(--primary);
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+        }
+
+        .how-it-works {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+        }
+
+        .step.animate-step {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+            font-weight: bold;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background: rgba(0, 86, 179, 0.1);
+            border-radius: 50%;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .benefit-item {
+            background: var(--card-bg);
+            padding: 20px;
+            border-left: 4px solid var(--primary);
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .commitment-list {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .commitment-list li {
+            margin-bottom: 15px;
+            list-style-type: none;
+            padding-left: 30px;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .commitment-list li:nth-child(1) { animation-delay: 0.1s; }
+        .commitment-list li:nth-child(2) { animation-delay: 0.3s; }
+        .commitment-list li:nth-child(3) { animation-delay: 0.5s; }
+
+        .commitment-list li:before {
+            content: "✓";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, rgba(0, 86, 179, 0.05), rgba(0, 166, 81, 0.05));
+            border-radius: 10px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(0, 166, 81, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .cta::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(0, 86, 179, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .cta .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover::after {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            position: relative;
+        }
+
+        .btn-outline::after {
+            background: var(--primary);
+            opacity: 0;
+        }
+
+        .btn-outline:hover {
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-outline:hover::after {
+            opacity: 1;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            transition: var(--transition);
+            flex: 1;
+            max-width: 25%;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .nav-item.active {
+            opacity: 1;
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-item:hover {
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: var(--card-bg);
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            font-size: 0.9rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .trust-badge i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .testimonial {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .testimonial.animate-testimonial {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .testimonial::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 4rem;
+            color: rgba(0, 86, 179, 0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+
+        .testimonial-content {
+            margin-bottom: 15px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .author-info {
+            font-size: 0.9rem;
+        }
+
+        .author-name {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .author-title {
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--text-light);
+        }
+
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .how-it-works {
+                flex-direction: column;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step {
+                transition-delay: 0s !important;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Logo and Actions -->
+    <header>
+        <a href="index.html" class="logo">
+            <img src="Growvia.png" alt="Growvia Logo">
+            <span style="margin-left: -10px;">rowvia</span>
+        </a>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>About Growvia</h1>
+            <p class="tagline">Where Smart Investments Meet Peace of Mind</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <section>
+            <div class="highlight">
+                <p>At <strong>Growvia</strong>, we're redefining what it means to invest. Founded on principles of <strong>transparency, flexibility, and sustainable growth</strong>, we've created a platform that puts <strong>you in control</strong> of your financial future. Unlike traditional investment schemes with hidden terms and locked funds, we offer a <strong>modern approach</strong> where your capital remains accessible while your earnings grow steadily.</p>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Our Story</h2>
+            <p>Growvia was born from a simple realization: most investment platforms either lock away your money or promise unrealistic returns. We set out to create something different—a platform where:</p>
+            
+            <ul class="commitment-list">
+                <li><strong>Your principal investment stays liquid</strong> - withdraw anytime without penalties</li>
+                <li><strong>Returns are sustainable</strong> - no "get rich quick" schemes, just steady growth</li>
+                <li><strong>Transparency is non-negotiable</strong> - no hidden fees or surprise conditions</li>
+            </ul>
+            
+            <p class="mt-3">Since our launch, we've helped thousands of investors grow their funds while maintaining financial flexibility—proving that you don't have to choose between access and growth.</p>
+        </section>
+        
+        <section>
+            <h2>How Growvia Works</h2>
+            <p class="subtitle text-center text-muted mt-2">Three Simple Steps to Financial Growth</p>
+            
+            <div class="how-it-works">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Invest What You Can</h3>
+                    <ul>
+                        <li>Start with just <strong>$50</strong>—no large minimums</li>
+                        <li>Choose from flexible investment plans</li>
+                        <li><strong>Your initial deposit remains accessible</strong>—withdraw anytime</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Watch Your Earnings Grow</h3>
+                    <ul>
+                        <li>Daily/weekly returns based on your plan</li>
+                        <li>Earnings compound automatically</li>
+                        <li><strong>Withdraw profits after 6 months</strong>—this waiting period ensures platform stability</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Withdraw Hassle-Free</h3>
+                    <ul>
+                        <li><strong>Principal investment?</strong> Available anytime</li>
+                        <li><strong>Earnings?</strong> Accessible after the 6-month period</li>
+                        <li>Fast processing—typically within 24-48 hours</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Trust Badges -->
+        <div class="trust-badges">
+            <div class="trust-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span>Bank-Level Security</span>
+            </div>
+            <div class="trust-badge">
+                <i class="fas fa-lock"></i>
+                <span>SSL Encrypted</span>
+            </div>
+            <div class="trust-badge">
+                <i class="fas fa-user-check"></i>
+                <span>Verified Members</span>
+            </div>
+        </div>
+        
+        <section>
+            <h2>Why Investors Choose Growvia</h2>
+            
+            <div class="benefits">
+                <div class="benefit-item">
+                    <h3>Liquidity You Can Count On</h3>
+                    <p>Unlike traditional investments that lock your funds for years, we believe you should have access to your principal when you need it. Our unique model allows withdrawals of your initial investment at any time.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>Realistic Returns</h3>
+                    <p>We're transparent about what you can earn. Our carefully calculated returns are designed to be sustainable long-term, not flashy short-term promises that can't be maintained.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>No Surprises</h3>
+                    <p>From our fee structure to withdrawal policies, everything is clearly explained upfront. What you see is what you get—no hidden clauses or last-minute changes.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>Dedicated Support</h3>
+                    <p>Have a question? Our support team responds within 24 hours. We're committed to providing the guidance you need to make informed investment decisions.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Our Core Values</h2>
+            
+            <div class="benefits">
+                <div class="benefit-item">
+                    <h3>Integrity First</h3>
+                    <p>We believe in doing right by our investors, even when no one is watching. Every decision is made with your best interests in mind.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>Transparency Always</h3>
+                    <p>From how we generate returns to our operational policies, we maintain complete openness about our business model.</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h3>Sustainable Growth</h3>
+                    <p>We prioritize long-term stability over short-term gains, ensuring our platform remains robust for years to come.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Testimonials Section -->
+        <section>
+            <h2>What Our Investors Say</h2>
+            <p class="subtitle text-center text-muted mt-2">Real experiences from our community</p>
+            
+            <div class="testimonials">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "I was skeptical at first, but Growvia's transparency won me over. Being able to withdraw my initial investment gave me the confidence to start, and the returns have been steady as promised."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <div class="author-name">James D.</div>
+                            <div class="author-title">Investor since 2022</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "The 6-month waiting period for earnings withdrawals seemed long at first, but I understand it helps keep the platform stable. The returns have been worth the wait!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SM</div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah M.</div>
+                            <div class="author-title">Investor since 2023</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "What sets Growvia apart is their customer service. When I had questions about my investment, I got clear, helpful answers within hours—not days."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">TR</div>
+                        <div class="author-info">
+                            <div class="author-name">Thomas R.</div>
+                            <div class="author-title">Investor since 2023</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="cta">
+            <h2>Ready to Invest With Confidence?</h2>
+            <p class="mt-2"><i class="fa-solid fa-lightbulb"></i> <strong>Start with just $50 today and experience the Growvia difference.</strong></p>
+            
+            <div class="cta-buttons">
+                <a href="wallet.html" class="btn pulse">Get Started Now</a>
+                <a href="#" class="btn btn-outline">Contact Our Team</a>
+                <a href="#" class="btn btn-outline">Investment Plans</a>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© <span id="currentYear"></span> Growvia. All rights reserved.</p>
+            <p class="mt-1 text-muted">Investments involve risk. Past performance is not indicative of future results.</p>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="wallet.html" class="nav-item">
+            <i class="fas fa-wallet"></i>
+            <span>Wallet</span>
+        </a>
+        <a href="task.html" class="nav-item">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="about.html" class="nav-item active">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+        </a>
+    </div>
+
+    <script>
+        // Theme System - Load first to prevent flash of unstyled content
+        class ThemeSystem {
+            constructor() {
+                this.themeToggle = document.getElementById('themeToggle');
+                this.body = document.body;
+                this.init();
+            }
+            
+            init() {
+                this.setInitialTheme();
+                this.setupEventListeners();
+            }
+            
+            setInitialTheme() {
+                const savedTheme = localStorage.getItem('growviaDarkMode');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (savedTheme === 'enabled' || (!savedTheme && prefersDark)) {
+                    this.enableDarkMode();
+                } else {
+                    this.disableDarkMode();
+                }
+            }
+            
+            setupEventListeners() {
+                this.themeToggle.addEventListener('click', () => this.toggleTheme());
+                
+                // Sync across tabs
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'growviaDarkMode') {
+                        if (e.newValue === 'enabled') {
+                            this.enableDarkMode();
+                        } else {
+                            this.disableDarkMode();
+                        }
+                    }
+                });
+            }
+            
+            toggleTheme() {
+                if (this.body.classList.contains('dark-mode')) {
+                    this.disableDarkMode();
+                } else {
+                    this.enableDarkMode();
+                }
+            }
+            
+            enableDarkMode() {
+                this.body.classList.add('dark-mode');
+                this.themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('growviaDarkMode', 'enabled');
+            }
+            
+            disableDarkMode() {
+                this.body.classList.remove('dark-mode');
+                this.themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('growviaDarkMode', 'disabled');
+            }
+        }
+
+        // Initialize theme immediately
+        const themeSystem = new ThemeSystem();
+
+        // Animation System
+        class AnimationSystem {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                this.animateSteps();
+                this.animateTestimonials();
+                this.setupSmoothScrolling();
+                this.setupScrollAnimations();
+            }
+            
+            animateSteps() {
+                const observerOptions = {
+                    threshold: 0.1
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry, index) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate-step');
+                            entry.target.style.transitionDelay = `${index * 0.2}s`;
+                        }
+                    });
+                }, observerOptions);
+                
+                document.querySelectorAll('.step').forEach(step => {
+                    observer.observe(step);
+                });
+            }
+            
+            animateTestimonials() {
+                const observerOptions = {
+                    threshold: 0.1
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry, index) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate-testimonial');
+                            entry.target.style.transitionDelay = `${index * 0.2}s`;
+                        }
+                    });
+                }, observerOptions);
+                
+                document.querySelectorAll('.testimonial').forEach(testimonial => {
+                    observer.observe(testimonial);
+                });
+            }
+            
+            setupSmoothScrolling() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        document.querySelector(this.getAttribute('href')).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    });
+                });
+            }
+            
+            setupScrollAnimations() {
+                const animateOnScroll = (elements, className) => {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add(className);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    
+                    elements.forEach(el => observer.observe(el));
+                };
+                
+                // Animate benefit items
+                animateOnScroll(document.querySelectorAll('.benefit-item'), 'animate-step');
+                
+                // Animate trust badges with staggered delay
+                const badges = document.querySelectorAll('.trust-badge');
+                badges.forEach((badge, index) => {
+                    badge.style.animationDelay = `${index * 0.1}s`;
+                });
+                animateOnScroll(badges, 'fadeIn');
+            }
+        }
+
+        // Main App
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize systems
+            const animationSystem = new AnimationSystem();
+            
+            // Update copyright year
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Add hover effect to benefit items
+            document.querySelectorAll('.benefit-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.1)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

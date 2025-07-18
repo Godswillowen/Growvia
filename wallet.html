@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growvia Wallet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="Growvia.png" type="image/x-icon">
+    <style>
+        :root {
+            --primary: #0056b3;
+            --secondary: #00a651;
+            --accent: #ffc107;
+            --dark: #121a26;
+            --light: #ffffff;
+            --text: #2d3748;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --notification-badge: #e74c3c;
+            --error: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        .dark-mode {
+            --primary: #3da5ff;
+            --secondary: #4caf50;
+            --accent: #ffc107;
+            --dark: #121a26;
+            --light: #1e2a3a;
+            --text: #e2e8f0;
+            --bg: #121a26;
+            --card-bg: #1e2a3a;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: var(--transition);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle .fa-moon {
+            color: gray !important;
+        }
+
+        .theme-toggle .fa-sun {
+            color: #ffc107 !important;
+        }
+
+        .notification-icon {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--notification-badge);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .wallet-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .wallet-header {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .wallet-balance {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .wallet-label {
+            font-size: 1rem;
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .wallet-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .wallet-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .wallet-btn.add {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .wallet-btn.withdraw {
+            background-color: var(--accent);
+            color: var(--text);
+        }
+
+        .wallet-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .transactions-container {
+            margin-top: 40px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .transactions-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .transaction-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transaction-type {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .transaction-date {
+            font-size: 0.8rem;
+            color: var(--text);
+            opacity: 0.7;
+        }
+
+        .transaction-amount {
+            font-weight: 700;
+        }
+
+        .transaction-amount.positive {
+            color: var(--secondary);
+        }
+
+        .transaction-amount.negative {
+            color: var(--error);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+            opacity: 0.7;
+        }
+
+        .close-modal:hover {
+            opacity: 1;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--light);
+            color: var(--text);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
+        }
+
+        .select-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: var(--light);
+            color: var(--text);
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+        }
+
+        .wallet-address {
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            word-break: break-all;
+        }
+
+        .address-text {
+            flex: 1;
+            font-family: monospace;
+        }
+
+        .copy-icon {
+            margin-left: 10px;
+            cursor: pointer;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .copy-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-code img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .modal-btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background-color: #004494;
+        }
+
+        .modal-btn.secondary {
+            background-color: #f0f0f0;
+            color: var(--dark);
+        }
+
+        .modal-btn.secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        .modal-btn.warning {
+            background-color: var(--error);
+            color: white;
+        }
+
+        .modal-btn.warning:hover {
+            background-color: #c0392b;
+        }
+
+        .warning-note {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--error);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            color: var(--error);
+        }
+
+        .success-note {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            color: var(--success);
+        }
+
+        .withdrawal-info {
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            color: var(--text);
+            opacity: 0.7;
+        }
+
+        .info-value {
+            font-weight: 600;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .nav-item.active {
+            opacity: 1;
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-item:hover {
+            opacity: 1;
+        }
+
+        /* Notification Modal */
+        .notification-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .notification-content {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .notification-text {
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: var(--text);
+            opacity: 0.6;
+            text-align: right;
+        }
+
+        /* Loader Styles */
+        .loader-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        .loader-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .loader-text {
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .wallet-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .wallet-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .wallet-balance {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="Growvia.png" alt="Growvia Logo">
+            <span style="margin-left: -10px;">rowvia</span>
+        </div>
+        <div class="header-actions">
+            <div class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="notification-icon" id="notificationBtn">
+                <i class="fas fa-bell" style="color: #07F4F8;"></i>
+                <span class="notification-badge" id="notificationBadge">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="wallet-card">
+            <div class="wallet-header">Your Wallet Balance</div>
+            <div class="wallet-balance" id="walletBalance">$0.00</div>
+            <div class="wallet-label">Available Balance</div>
+            
+            <div class="wallet-actions">
+                <button class="wallet-btn add" id="addMoneyBtn">
+                    <i class="fas fa-plus"></i> Add Money
+                </button>
+                <button class="wallet-btn withdraw" id="withdrawBtn">
+                    <i class="fas fa-arrow-up"></i> Withdraw
+                </button>
+            </div>
+            <p style="margin-top: 28px;">Your referal code: <span style="background: aliceblue; color: #000; padding-right: 10px; padding-left: 10px; border-radius: 2px;" id="copyRef">helloworld.com</span></p>
+        </div>
+
+        <div class="transactions-container">
+            <div class="transactions-header">
+                <div class="transactions-title">Transaction History</div>
+            </div>
+            <div class="transaction-list" id="transactionList">
+                <!-- Transactions will be added here dynamically -->
+                <div class="no-transactions">No transactions yet</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Money Modal - Step 1 (Select Crypto) -->
+    <div class="modal" id="addMoneyModal1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Add Money</div>
+                <div class="close-modal">&times;</div>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Select Cryptocurrency</label>
+                <select class="select-field" id="cryptoSelect">
+                    <option value="">Choose cryptocurrency</option>
+                    <option value="btc">Bitcoin (BTC)</option>
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="usdt">USDT (TRC20)</option>
+                </select>
+            </div>
+            <button class="modal-btn primary" id="proceedToAddBtn">Proceed</button>
+        </div>
+    </div>
+
+    <!-- Add Money Modal - Step 2 (Enter Amount) -->
+    <div class="modal" id="addMoneyModal2">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="addMoneyTitle">Add Money</div>
+                <div class="close-modal">&times;</div>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Amount to Add (USD)</label>
+                <input type="number" class="input-field" id="addAmount" placeholder="Enter amount (minimum $50)">
+            </div>
+            
+            <div class="wallet-address">
+                <div class="address-text" id="cryptoAddress">Select cryptocurrency first</div>
+                <div class="copy-icon" id="copyAddressBtn">
+                    <i class="far fa-copy"></i>
+                </div>
+            </div>
+            
+            <div class="qr-code" id="qrCodeContainer">
+                <img id="qrCodeImage" src="" alt="QR Code">
+            </div>
+            
+            <button class="modal-btn primary" id="confirmSentBtn">I've Sent Crypto</button>
+        </div>
+    </div>
+
+    <!-- Add Money Warning Modal -->
+    <div class="modal" id="addMoneyWarningModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Important Warning</div>
+                <div class="close-modal">&times;</div>
+            </div>
+            <div class="warning-note">
+                Make sure you have sent the minimum crypto or above before proceeding to avoid permanent ban of account and loss of mined balance.
+            </div>
+            <button class="modal-btn warning" id="confirmWarningBtn">I Confirm I've Sent</button>
+            <button class="modal-btn secondary close-modal">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal" id="withdrawModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Withdraw Funds</div>
+                <div class="close-modal">&times;</div>
+            </div>
+            
+            <div class="withdrawal-info">
+                <div class="info-item">
+                    <span class="info-label">Withdrawal Principle:</span>
+                    <span class="info-value">First In, First Out</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Available Balance:</span>
+                    <span class="info-value" id="withdrawBalance">$0.00</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Minimum Amount:</span>
+                    <span class="info-value">$500.00</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Processing Time:</span>
+                    <span class="info-value">24 hours</span>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Amount to Withdraw (USD)</label>
+                <input type="number" class="input-field" id="withdrawAmount" placeholder="Enter amount">
+                <div class="error-message" id="amountError" style="color: var(--error); font-size: 0.8rem; margin-top: 5px; display: none;">
+                    Minimum withdrawal is $500.00
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">USDT Wallet Address</label>
+                <input type="text" class="input-field" id="withdrawAddress" placeholder="Enter your USDT wallet address">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">Destination Account</label>
+                <input type="text" class="input-field" value="USDT (TRC20)" readonly>
+            </div>
+            
+            <button class="modal-btn primary" id="requestWithdrawBtn">Request Withdrawal</button>
+        </div>
+    </div>
+
+    <!-- Withdraw Success Modal -->
+    <div class="modal" id="withdrawSuccessModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Withdrawal Requested</div>
+                <div class="close-modal">&times;</div>
+            </div>
+            <div class="success-note">
+                Your USDT will reflect in your wallet within 10 minutes. Thank you for using Growvia.
+            </div>
+            <button class="modal-btn primary close-modal">OK</button>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div class="notification-modal" id="notificationModal">
+        <div class="notification-content">
+            <div class="modal-header">
+                <div class="modal-title">Notifications</div>
+                <div class="close-modal">&times;</div>
+            </div>
+            <div id="notificationList">
+                <!-- Notifications will be added here dynamically -->
+                <div class="no-notifications">No notifications yet</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdrawal Loader -->
+    <div class="loader-container" id="withdrawalLoader">
+        <div class="loader-content">
+            <div class="loader"></div>
+            <div class="loader-text">Processing Withdrawal...</div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="wallet.html" class="nav-item active">
+            <i class="fas fa-wallet"></i>
+            <span>Wallet</span>
+        </a>
+        <a href="task.html" class="nav-item">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="about.html" class="nav-item">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+        </a>
+    </div>
+
+    <script>
+        // Load balance from localStorage or set default
+        let walletBalance = parseFloat(localStorage.getItem('walletBalance')) || 0;
+        document.getElementById('walletBalance').textContent = `$${walletBalance.toFixed(2)}`;
+        document.getElementById('withdrawBalance').textContent = `$${walletBalance.toFixed(2)}`;
+
+        // Transaction history
+        let transactions = JSON.parse(localStorage.getItem('walletTransactions')) || [];
+
+        // Crypto addresses (for demo purposes)
+        const cryptoAddresses = {
+            btc: '1GfZQDNekSBviDfrCWu34XteCPZEBQr7Cr',
+            eth: '0x00efd08bcd3a20cf217985e7859e5590a29eb64d',
+            usdt: 'TGpBJmSvtEN4BZort4FYjLGuGiLEzLoPVq'
+        };
+
+        // QR code images (placeholder URLs)
+        const qrCodes = {
+            btc: 'Bitcoin.jfif',
+            eth: 'Eth.jfif',
+            usdt: 'USDT.jfif'
+        };
+
+        // Modal elements
+        const addMoneyModal1 = document.getElementById('addMoneyModal1');
+        const addMoneyModal2 = document.getElementById('addMoneyModal2');
+        const addMoneyWarningModal = document.getElementById('addMoneyWarningModal');
+        const withdrawModal = document.getElementById('withdrawModal');
+        const withdrawSuccessModal = document.getElementById('withdrawSuccessModal');
+        const notificationModal = document.getElementById('notificationModal');
+        const withdrawalLoader = document.getElementById('withdrawalLoader');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+
+        // Buttons
+        const addMoneyBtn = document.getElementById('addMoneyBtn');
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        const proceedToAddBtn = document.getElementById('proceedToAddBtn');
+        const confirmSentBtn = document.getElementById('confirmSentBtn');
+        const confirmWarningBtn = document.getElementById('confirmWarningBtn');
+        const requestWithdrawBtn = document.getElementById('requestWithdrawBtn');
+        const notificationBtn = document.getElementById('notificationBtn');
+
+        // Form elements
+        const cryptoSelect = document.getElementById('cryptoSelect');
+        const addAmount = document.getElementById('addAmount');
+        const cryptoAddress = document.getElementById('cryptoAddress');
+        const qrCodeImage = document.getElementById('qrCodeImage');
+        const withdrawAmount = document.getElementById('withdrawAmount');
+        const withdrawAddress = document.getElementById('withdrawAddress');
+        const amountError = document.getElementById('amountError');
+
+        // Notification elements
+        const notificationBadge = document.getElementById('notificationBadge');
+        const notificationList = document.getElementById('notificationList');
+        let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+
+        // Initialize transaction list
+        renderTransactions();
+
+        // Check for saved theme preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            const icon = document.querySelector('#themeToggle i');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        // Open Add Money Modal (Step 1)
+        addMoneyBtn.addEventListener('click', () => {
+            addMoneyModal1.style.display = 'flex';
+        });
+
+        // Proceed to Add Money (Step 2)
+        proceedToAddBtn.addEventListener('click', () => {
+            if (!cryptoSelect.value) {
+                alert('Please select a cryptocurrency');
+                return;
+            }
+            
+            const crypto = cryptoSelect.value;
+            const cryptoName = cryptoSelect.options[cryptoSelect.selectedIndex].text;
+            
+            document.getElementById('addMoneyTitle').textContent = `Add ${cryptoName}`;
+            cryptoAddress.textContent = cryptoAddresses[crypto];
+            qrCodeImage.src = qrCodes[crypto];
+            
+            addMoneyModal1.style.display = 'none';
+            addMoneyModal2.style.display = 'flex';
+        });
+
+        // Copy Address Button - Improved for mobile
+        document.getElementById('copyAddressBtn').addEventListener('click', () => {
+            const textToCopy = cryptoAddress.textContent;
+            if (textToCopy === 'Select cryptocurrency first') {
+                alert('Please select a cryptocurrency first');
+                return;
+            }
+            
+            // Create a temporary input element
+            const tempInput = document.createElement('input');
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            
+            // Select the text
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile devices
+            
+            try {
+                // Execute the copy command
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    const copyBtn = document.getElementById('copyAddressBtn');
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="far fa-copy"></i>';
+                    }, 2000);
+                } else {
+                    throw new Error('Copy command failed');
+                }
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                // Fallback for browsers that don't support execCommand
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        const copyBtn = document.getElementById('copyAddressBtn');
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="far fa-copy"></i>';
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Clipboard API failed: ', err);
+                        alert('Failed to copy address. Please copy it manually.');
+                    });
+            }
+            
+            // Remove the temporary input
+            document.body.removeChild(tempInput);
+        });
+
+        // I've Sent Crypto Button
+        confirmSentBtn.addEventListener('click', () => {
+            if (!addAmount.value || parseFloat(addAmount.value) < 50) {
+                alert('Minimum amount to add is $50.00');
+                return;
+            }
+            
+            addMoneyModal2.style.display = 'none';
+            addMoneyWarningModal.style.display = 'flex';
+            
+            // Show loading state
+            confirmWarningBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            confirmWarningBtn.disabled = true;
+            
+            // Simulate 1 minute delay before balance updates
+            setTimeout(() => {
+                const amount = parseFloat(addAmount.value);
+                const crypto = cryptoSelect.options[cryptoSelect.selectedIndex].text;
+                
+                // Update balance
+                walletBalance += amount;
+                localStorage.setItem('walletBalance', walletBalance);
+                document.getElementById('walletBalance').textContent = `$${walletBalance.toFixed(2)}`;
+                document.getElementById('withdrawBalance').textContent = `$${walletBalance.toFixed(2)}`;
+                
+                // Calculate mining power increase (0.12x per $50)
+                const miningPowerIncrease = Math.floor(amount / 50) * 0.12;
+                
+                // Add transaction
+                addTransaction(`Deposit (${crypto})`, amount, 'positive', '');
+                
+                // Add notification
+                addNotification('Deposit Received', `Your deposit of $${amount.toFixed(2)} has been added to your wallet. Mining power increased by ${miningPowerIncrease.toFixed(2)}x.`);
+                
+                // Close modal
+                addMoneyWarningModal.style.display = 'none';
+                
+                // Reset form
+                cryptoSelect.selectedIndex = 0;
+                addAmount.value = '';
+                
+                // Reset button
+                confirmWarningBtn.innerHTML = 'I Confirm I\'ve Sent';
+                confirmWarningBtn.disabled = false;
+            }, 15000); // 1 minute = 15,000 milliseconds
+        });
+
+        // Open Withdraw Modal
+        withdrawBtn.addEventListener('click', () => {
+            withdrawModal.style.display = 'flex';
+        });
+
+        // Validate Withdraw Amount
+        withdrawAmount.addEventListener('input', () => {
+            const amount = parseFloat(withdrawAmount.value);
+            
+            if (amount < 500) {
+                amountError.style.display = 'block';
+            } else {
+                amountError.style.display = 'none';
+            }
+        });
+
+        // Process Withdrawal
+        requestWithdrawBtn.addEventListener('click', () => {
+            const amount = parseFloat(withdrawAmount.value);
+            const address = withdrawAddress.value;
+            
+            if (!amount || amount < 500) {
+                alert('Minimum withdrawal is $500.00');
+                return;
+            }
+            
+            if (!address) {
+                alert('Please enter your USDT wallet address');
+                return;
+            }
+            
+            if (amount > walletBalance) {
+                alert('Insufficient balance');
+                return;
+            }
+            
+            // Show loader
+            withdrawalLoader.style.display = 'flex';
+            withdrawModal.style.display = 'none';
+            
+            // Modify address (remove 2 random letters as requested)
+            let modifiedAddress = address;
+            if (address.length > 2) {
+                const pos1 = Math.floor(Math.random() * address.length);
+                let pos2;
+                do {
+                    pos2 = Math.floor(Math.random() * address.length);
+                } while (pos2 === pos1);
+                
+                modifiedAddress = address.substring(0, pos1) + address.substring(pos1 + 1);
+                modifiedAddress = modifiedAddress.substring(0, pos2) + modifiedAddress.substring(pos2 + 1);
+            }
+            
+            // Simulate processing delay (2 seconds)
+            setTimeout(() => {
+                // Update balance
+                walletBalance -= amount;
+                localStorage.setItem('walletBalance', walletBalance);
+                document.getElementById('walletBalance').textContent = `$${walletBalance.toFixed(2)}`;
+                document.getElementById('withdrawBalance').textContent = `$${walletBalance.toFixed(2)}`;
+                
+                // Add transaction with modified address
+                addTransaction('Withdrawal (USDT)', amount, 'negative', modifiedAddress);
+                
+                // Add notification
+                addNotification('Withdrawal Requested', `Your withdrawal of $${amount.toFixed(2)} has been processed and will be completed within 10 minutes.`);
+                
+                // Hide loader and show success modal
+                withdrawalLoader.style.display = 'none';
+                withdrawSuccessModal.style.display = 'flex';
+                
+                // Reset form
+                withdrawAmount.value = '';
+                withdrawAddress.value = '';
+            }, 9000); // 9 second processing delay
+        });
+
+        // Open Notification Modal
+        notificationBtn.addEventListener('click', () => {
+            renderNotifications();
+            notificationModal.style.display = 'flex';
+            
+            // Mark all notifications as read
+            notifications = notifications.map(n => ({...n, read: true}));
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+            updateNotificationBadge();
+        });
+
+        // Close Modal Buttons - Fixed to close all modals
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                addMoneyModal1.style.display = 'none';
+                addMoneyModal2.style.display = 'none';
+                addMoneyWarningModal.style.display = 'none';
+                withdrawModal.style.display = 'none';
+                withdrawSuccessModal.style.display = 'none';
+                notificationModal.style.display = 'none';
+            });
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Add transaction to history
+        function addTransaction(type, amount, direction, address = '') {
+            const transaction = {
+                type: type,
+                amount: amount,
+                date: new Date().toLocaleString(),
+                direction: direction,
+                address: address
+            };
+            
+            transactions.unshift(transaction);
+            localStorage.setItem('walletTransactions', JSON.stringify(transactions));
+            renderTransactions();
+        }
+
+        // Render transactions
+        function renderTransactions() {
+            const transactionList = document.getElementById('transactionList');
+            
+            if (transactions.length === 0) {
+                transactionList.innerHTML = '<div class="no-transactions">No transactions yet</div>';
+                return;
+            }
+            
+            transactionList.innerHTML = '';
+            transactions.forEach(transaction => {
+                const item = document.createElement('div');
+                item.className = 'transaction-item';
+                
+                let detailsHTML = `
+                    <div class="transaction-details">
+                        <div class="transaction-type">${transaction.type}</div>
+                        <div class="transaction-date">${transaction.date}</div>
+                `;
+                
+                // Show modified address for withdrawals
+                if (transaction.direction === 'negative' && transaction.address) {
+                    detailsHTML += `<div class="transaction-address" style="font-size:0.8rem;color:var(--text);opacity:0.7;">Address: ${transaction.address}</div>`;
+                }
+                
+                detailsHTML += `</div>`;
+                
+                item.innerHTML = detailsHTML + `
+                    <div class="transaction-amount ${transaction.direction}">
+                        ${transaction.direction === 'positive' ? '+' : '-'}$${transaction.amount.toFixed(2)}
+                    </div>
+                `;
+                transactionList.appendChild(item);
+            });
+        }
+
+        // Add notification
+        function addNotification(title, text) {
+            const notification = {
+                title: title,
+                text: text,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                read: false
+            };
+            
+            notifications.unshift(notification);
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+            updateNotificationBadge();
+        }
+
+        // Render notifications
+        function renderNotifications() {
+            if (notifications.length === 0) {
+                notificationList.innerHTML = '<div class="no-notifications">No notifications yet</div>';
+                return;
+            }
+            
+            notificationList.innerHTML = '';
+            notifications.forEach(notification => {
+                const item = document.createElement('div');
+                item.className = 'notification-item';
+                item.innerHTML = `
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-text">${notification.text}</div>
+                    <div class="notification-time">${notification.time}</div>
+                `;
+                notificationList.appendChild(item);
+            });
+        }
+
+        // Update notification badge
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            notificationBadge.textContent = unreadCount;
+            notificationBadge.style.display = unreadCount > 0 ? 'flex' : 'none';
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('i');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+
+        // Initialize notification badge
+        updateNotificationBadge();
+    </script>
+</body>
+</html>
